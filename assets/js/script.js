@@ -33,7 +33,6 @@ var loadTasks = function() {
 
   // loop over object properties
   $.each(tasks, function(list, arr) {
-    console.log(list, arr);
     // then loop over sub-array
     arr.forEach(function(task) {
       createTask(task.text, task.date, list);
@@ -46,7 +45,24 @@ var saveTasks = function() {
 };
 
 
+$(".list-group").on("click", "p", function(){
+ 
+    var text = $(this).text().trim();
+    var textInput = $("<textarea>").addClass("form-control").val(text);
+    $(this).replaceWith(textInput);
+    textInput.trigger("focus");
+      console.log(text);
+    }) 
 
+$(".list-group").on("blur", "textarea",function(){
+    var text = $(this).val().trim();
+    var status = $(this).attr("id").replace("list-","");
+    var index = $(this).closest(".list-group-item").index();
+    var taskP = $("<p>").addClass("m-1").text(text);
+     $(this).replaceWith(taskP);
+})
+
+  
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
@@ -79,6 +95,8 @@ $("#task-form-modal .btn-primary").click(function() {
     });
 
     saveTasks();
+
+    
   }
 });
 
