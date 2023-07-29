@@ -45,6 +45,7 @@ var saveTasks = function() {
 };
 
 
+
 $(".list-group").on("click", "p", function(){
  
     var text = $(this).text().trim();
@@ -55,14 +56,50 @@ $(".list-group").on("click", "p", function(){
     }) 
 
 $(".list-group").on("blur", "textarea",function(){
+  // get the textarea's curret value/text
     var text = $(this).val().trim();
-    var status = $(this).attr("id").replace("list-","");
+    //get the parent ul's id attrubute
+    var status = $(this).closest(".list-group").attr("id").replace("list-","");
+    // get the tast's position in the list of other li elements
     var index = $(this).closest(".list-group-item").index();
+    tasks[status][index].text = text;
+    saveTasks();
+    //recreate the p element
     var taskP = $("<p>").addClass("m-1").text(text);
+    // replace textarea with p element
      $(this).replaceWith(taskP);
 })
 
-  
+$(".list-group").on("click", "span", function(){
+  //get current text
+  var date = $(this).text().trim();
+
+  //create new input element
+  var dateInput = $("<input>").attr("type", "text").addClass("form-control").val(date);
+
+  //swap out elements
+  $(this).replaceWith(dateInput);
+
+  //automatically focus on new element
+  dateInput.trigger("focus");
+});
+
+$(".list-group").on("blur", "input[type = 'text']", function() {
+  // get cutrrent text
+  var date = $(this).val().trim();
+
+  //get the parent ul's id attribbute
+  var status  = $(this).closest(".list-group").attr("id").replace("list-", "");
+
+  //get the task's position in the list of other li elements
+  var index = $(this).closest(".list-group-item").index();
+
+  //recreate span element with bootstrap classes
+  var taskSpan = $("<span>").addClass("badge badge-primary badge-pill").text(date);
+
+  //replace input with span element
+  $(this). replaceWith(taskSpan);
+})
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
