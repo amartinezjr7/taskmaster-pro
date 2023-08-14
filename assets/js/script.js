@@ -205,15 +205,21 @@ $(".card .list-group").sortable({
   helper: "clone",
   activate: function(event){
     console.log("activate", this);
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("botton-trash-drag");
   },
   deactivate: function(event){
     console.log("deactivate", this);
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag");
   },
   over: function(event){
     console.log("over", event.target);
+    $(this).addClass("dropover-active");
   },
   out: function(event){
     console.log("out", event.target);
+    $(this).addClass("dropover-active");
   },
   update: function(event){
 
@@ -248,13 +254,15 @@ $("#trash").droppable({
   drop: function(event, ui) {
     // remove dragged element from the dom
     ui.draggable.remove();
-
+    $(".bottom-trash").addClass("bottom-trash-active");
   },
   over: function(event, ui) {
     console.log(ui);
+    $(".botton-trash").addClass("bottom-trash-active");
   },
   out: function(event, ui) {
     console.log(ui);
+    $(".bottom-trash").addClass("bottom-trash-active");
   }
 });
 
@@ -262,3 +270,8 @@ $("#modalDueDate").datepicker({
   minDate: 1
 });
 
+setInterval(function(){
+  $(".card .list-group-item").each(function(index, el){
+    auditTask(el);
+  });
+}, (1000*60)*30);
